@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from ..services.app import app
+from ..app import app
 defaults_api = Blueprint('defaults_api', __name__)
 
 

@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from ...services.auth import verify_token
-from ...services.app import app
+from services.auth import verify_token
+from services.app import app
 
 
 @app.route("/api/auth/check", methods=["POST"])

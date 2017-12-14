@@ -3,10 +3,10 @@ from datetime import datetime
 from flask import request, jsonify
 from helpers.objectHelper import ObjectHelper
 from helpers.pgHelper import PGHelper
-from ...services.auth import generate_token
-from ...helpers.auth import Users
+from services.auth import generate_token
+from helpers.auth import Users
 
-from ...services.app import app
+from services.app import app
 
 
 @app.route("/api/auth/register", methods=["POST"])

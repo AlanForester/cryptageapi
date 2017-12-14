@@ -1,5 +1,4 @@
 import bcrypt as bc
-from models.mongoQuery import MongoQuery
 import hashlib
 
 from helpers.pgHelper import PGHelper

@@ -1,5 +1,5 @@
 from datetime import datetime
-from ..services.app import app
+from ..app import app
 from providers.config import get_config
 from flask import request
 
