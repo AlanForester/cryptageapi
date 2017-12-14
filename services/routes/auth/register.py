@@ -9,7 +9,7 @@ from helpers.auth import Users
 from services.app import app
 
 
-@app.route("/api/auth/register", methods=["POST"])
+@app.route("/site/register", methods=["POST"])
 def register():
 	incoming = request.get_json()
 	if incoming.get('data'):

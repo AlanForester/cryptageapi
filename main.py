@@ -10,16 +10,15 @@ class App(object):
 		service = Providers.config().launch_service
 		if service == "api":
 			print("Started on 8089")
-			app.run(port=8089)
-			# waitress.serve(app, port=5000, _quiet=True)
+			waitress.serve(app, port=8089, _quiet=True)
 			#
-			# # Создаем свой логгер
-			# logger = logging.getLogger('waitress2')
-			# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-			# ch = logging.StreamHandler()
-			# ch.setLevel(logging.DEBUG)
-			# ch.setFormatter(formatter)
-			# logger.addHandler(ch)
+			# Создаем свой логгер
+			logger = logging.getLogger('waitress2')
+			formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+			ch = logging.StreamHandler()
+			ch.setLevel(logging.DEBUG)
+			ch.setFormatter(formatter)
+			logger.addHandler(ch)
 
 	@staticmethod
 	def start():

@@ -6,11 +6,10 @@ from helpers.auth import Users
 from services.app import app
 
 
-@app.route("/api/auth/login", methods=["POST"])
+@app.route("/site/login", methods=["POST"])
 def authenticate():
 	incoming = request.get_json()
-	if incoming.get('data'):
-		incoming = json.loads(incoming.decode())
+	if incoming:
 		if incoming and 'userlogin' in incoming and 'password' in incoming:
 			user = Users.get_user_with_user_and_password(incoming.get("userlogin"), incoming.get("password"))
 			if user:
@@ -23,4 +22,4 @@ def authenticate():
 				return jsonify(valid=False, error="incorrect"), 200
 		return jsonify(valid=False, error="no_info"), 200
 	else:
-		jsonify(valid=False, error="no_data"), 200
+		return jsonify(valid=False, error="no_data"), 200
