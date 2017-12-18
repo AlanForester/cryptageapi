@@ -29,7 +29,7 @@ class Users:
 	@staticmethod
 	def generate_new_password(password):
 		hashed = Users.hashed_password(password)
-		return bc.hashpw(hashed.encode('utf-8'), bc.gensalt(prefix=b'2a', rounds=10)).decode()
+		return bc.hashpw(hashed.encode('utf-8'), bc.gensalt(log_rounds=10))
 
 	@staticmethod
 	def is_admin(ids):
