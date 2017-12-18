@@ -34,9 +34,7 @@ def getApi():
 @app.route("/user/main", methods=["POST"])
 @requires_auth()
 def getMain():
-	# print(g.current_user.get('ID'))
-	# user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=" + g.current_user.get('ID'))
-	user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=2038")
+	user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=" + g.current_user.get('ID'))
 	if user:
 		return jsonify(valid=True, result=user)
 	else:
