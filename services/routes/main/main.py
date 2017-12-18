@@ -17,7 +17,7 @@ def getApi():
 
 	time = (datetime.datetime.utcnow() - datetime.timedelta(minutes=5)).isoformat()
 	if filters.get('filters') is None or len(filters.get('filters')) == 0:
-		data = PGHelper.selectAll("SELECT e1.name as e1_name, e2.name as e2_name, MIN(divergent.time) as time, AVG(divergent.diff) as diff, p.pair_name as p_name FROM divergent LEFT JOIN exchanges AS e1 ON (exchanges1_id=e1.id) LEFT JOIN exchanges AS e2 ON (exchanges2_id=e2.id) LEFT JOIN pairs as p ON (pair_id=p.id) WHERE divergent.time > '" + time + "' GROUP BY e1.name, e2.name, p.pair_name ORDER BY diff DESC LIMIT 200")
+		data = PGHelper.selectAll("select * from (SELECT DISTINCT ON (e1.name, e2.name, p.pair_name) e1.name as e1_name, e2.name as e2_name, divergent.time as time, divergent.diff as diff, p.pair_name as p_name FROM divergent LEFT JOIN exchanges AS e1 ON (exchanges1_id=e1.id) LEFT JOIN exchanges AS e2 ON (exchanges2_id=e2.id) LEFT JOIN pairs as p ON (pair_id=p.id) WHERE divergent.time > '" + time + "' ORDER BY e1.name, e2.name, p.pair_name, divergent.time desc) as q order by diff desc LIMIT 200")
 	else:
 		where_str = "divergent.time > '" + time + "'"
 		if filters.get('filters').get('exchanges'):
@@ -34,7 +34,9 @@ def getApi():
 @app.route("/user/main", methods=["POST"])
 @requires_auth()
 def getMain():
-	user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=" + g.current_user.get('ID'))
+	# print(g.current_user.get('ID'))
+	# user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=" + g.current_user.get('ID'))
+	user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=2038")
 	if user:
 		return jsonify(valid=True, result=user)
 	else:
