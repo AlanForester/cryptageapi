@@ -9,7 +9,7 @@ def after_request(response):
 	import logging
 
 	logger = logging.getLogger('waitress2')
-	strr = datetime.utcnow().strftime("%d-%m %H:%M:%S") + " - " + str(response.status_code) + " - " + (request.headers.get('X-Real-IP') if request.headers.get('X-Real-IP') else request.remote_addr) + " - " + request.method + " - " + request.path
+	strr = datetime.now().strftime("%d-%m %H:%M:%S") + " - " + str(response.status_code) + " - " + (request.headers.get('X-Real-IP') if request.headers.get('X-Real-IP') else request.remote_addr) + " - " + request.method + " - " + request.path
 	logger.warning(strr)
 
 	if get_config().prod is False:

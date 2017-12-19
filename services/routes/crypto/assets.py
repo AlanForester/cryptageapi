@@ -4,8 +4,8 @@ from services.app import app
 from services.auth import requires_auth
 
 
-@app.route("/user/markets", methods=["POST"])
+@app.route("/user/assets", methods=["POST"])
 @requires_auth()
-def getMarkets():
-	data = PGHelper.selectAll("SELECT id, key, title FROM exchanges ORDER BY id DESC")
+def getAssets():
+	data = PGHelper.selectAll("SELECT id, symbol, name FROM assets ORDER BY id DESC")
 	return jsonify(valid=True, result=data)
