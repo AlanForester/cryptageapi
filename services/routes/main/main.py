@@ -17,16 +17,16 @@ def getApi():
 
 	time = (datetime.datetime.utcnow() - datetime.timedelta(minutes=5)).isoformat()
 	if filters.get('filters') is None or len(filters.get('filters')) == 0:
-		data = PGHelper.selectAll("select * from (SELECT DISTINCT ON (e1.name, e2.name, p.pair_name) e1.name as e1_name, e2.name as e2_name, divergent.time as time, divergent.diff as diff, p.pair_name as p_name FROM divergent LEFT JOIN exchanges AS e1 ON (exchanges1_id=e1.id) LEFT JOIN exchanges AS e2 ON (exchanges2_id=e2.id) LEFT JOIN pairs as p ON (pair_id=p.id) WHERE divergent.time > '" + time + "' ORDER BY e1.name, e2.name, p.pair_name, divergent.time desc) as q order by diff desc LIMIT 200")
+		data = PGHelper.selectAll("select * from (SELECT DISTINCT ON (e1.name, e2.name, p_name) e1.name as e1_name, e2.name as e2_name, divergent.time as time, divergent.diff as diff, CONCAT(p.base_key, '-', p.quote_key) as p_name FROM divergent LEFT JOIN exchanges AS e1 ON (exchanges1_id=e1.id) LEFT JOIN exchanges AS e2 ON (exchanges2_id=e2.id) LEFT JOIN pairs as p ON (pair_id=p.id) WHERE divergent.time > '" + time + "' ORDER BY e1.name, e2.name, p_name, divergent.time desc) as q order by diff desc LIMIT 200")
 	else:
 		where_str = "divergent.time > '" + time + "'"
 		if filters.get('filters').get('exchanges'):
-			where_str = where_str + "AND e1.id IN(" + ",".join(filters.get('filters').get('exchanges')) + ")"
+			where_str = where_str + "AND e1.id IN(" + ",".join(filters.get('filters').get('exchanges')) + ") OR e2.id IN(" + ",".join(filters.get('filters').get('exchanges')) + ")"
 		if filters.get('filters').get('pairs'):
 			where_str = where_str + "AND p.id IN(" + ",".join(filters.get('filters').get('pairs')) + ")"
 		if filters.get('filters').get('actives'):
 			pass
-		data = PGHelper.selectAll("SELECT e1.name as e1_name, e2.name as e2_name, MIN(divergent.time) as time, AVG(divergent.diff) as diff, p.pair_name as p_name FROM divergent LEFT JOIN exchanges AS e1 ON (exchanges1_id=e1.id) LEFT JOIN exchanges AS e2 ON (exchanges2_id=e2.id) LEFT JOIN pairs as p ON (pair_id=p.id) WHERE " + where_str + " GROUP BY e1.name, e2.name, p.pair_name ORDER BY diff DESC LIMIT 200")
+		data = PGHelper.selectAll("select * from (SELECT DISTINCT ON (e1.name, e2.name, p.pair_name) e1.name as e1_name, e2.name as e2_name, divergent.time as time, divergent.diff as diff, p.pair_name as p_name FROM divergent LEFT JOIN exchanges AS e1 ON (exchanges1_id=e1.id) LEFT JOIN exchanges AS e2 ON (exchanges2_id=e2.id) LEFT JOIN pairs as p ON (pair_id=p.id) WHERE " + where_str + " ORDER BY e1.name, e2.name, p.pair_name, divergent.time desc) as q order by diff desc LIMIT 200")
 
 	return jsonify(valid=True, result=data)
 
