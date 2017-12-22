@@ -1,4 +1,6 @@
 import datetime
+import random
+import string
 
 from flask import g
 from flask import request, jsonify
@@ -36,6 +38,8 @@ def getApi():
 def getMain():
 	user = PGHelper.selectOne("SELECT username, userlogin FROM users WHERE id=" + g.current_user.get('ID'))
 	if user:
+		user["cash"] = 0.00000007
+		user["hold"] = 0.00000007
 		return jsonify(valid=True, result=user)
 	else:
 		return jsonify(valid=False, error="no_user")
@@ -56,4 +60,3 @@ def getSettings():
 			return jsonify(valid=True, result=data)
 	else:
 		return jsonify(valid=False, error="no_user")
-
