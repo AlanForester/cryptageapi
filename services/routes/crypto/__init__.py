@@ -4,3 +4,4 @@ from .pairs import *
 from .assets import *
 from .internal import *
 from .signals import *
+from .robots import *
