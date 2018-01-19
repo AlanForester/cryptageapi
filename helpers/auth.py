@@ -20,7 +20,7 @@ class Users:
 	def get_user_with_user_and_password(user, password):
 		hashed = Users.hashed_password(password)
 
-		user = PGHelper.selectOne("SELECT password FROM users WHERE userlogin='" + user + "' LIMIT 1")
+		user = PGHelper.selectOne("SELECT password, id, email, username, userlogin FROM users WHERE userlogin='" + user + "' LIMIT 1")
 		if user and bc.checkpw(hashed.encode('utf-8'), user.get('password').encode('utf-8')):
 			return user
 		else:
