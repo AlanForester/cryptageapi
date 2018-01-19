@@ -13,7 +13,7 @@ def getSignalsList():
 	filters = request.get_json()
 	filters = ObjectHelper.cleanEmptyValues(filters)
 
-	data = PGHelper.selectAll("SELECT signals.name as signame, signals.type, e1.name as e1_name, e2.name as e2_name, a1.name as a1_name, a2.name as a2_name, a3.name as a3_name, signals.data2, u.userlogin, u.username FROM signals LEFT JOIN exchanges AS e1 ON (exchange1=e1.key) LEFT JOIN exchanges AS e2 ON (exchange2=e2.key) LEFT JOIN assets AS a1 ON (asset1=a1.symbol) LEFT JOIN assets AS a2 ON (asset2=a2.symbol) LEFT JOIN assets AS a3 ON (asset3=a3.symbol) LEFT JOIN users AS u ON (user_id=u.id)")
+	data = PGHelper.selectAll("SELECT signals.id as id, signals.name as signame, signals.type, e1.name as e1_name, e2.name as e2_name, a1.name as a1_name, a2.name as a2_name, a3.name as a3_name, signals.data2, u.userlogin, u.username FROM signals LEFT JOIN exchanges AS e1 ON (exchange1=e1.key) LEFT JOIN exchanges AS e2 ON (exchange2=e2.key) LEFT JOIN assets AS a1 ON (asset1=a1.symbol) LEFT JOIN assets AS a2 ON (asset2=a2.symbol) LEFT JOIN assets AS a3 ON (asset3=a3.symbol) LEFT JOIN users AS u ON (user_id=u.id)")
 	return jsonify(valid=True, result=data)
 
 

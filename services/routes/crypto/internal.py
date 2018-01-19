@@ -12,7 +12,9 @@ def getInternalList():
 	filters = request.get_json()
 	filters = ObjectHelper.cleanEmptyValues(filters)
 	if filters.get('filters') is None or len(filters.get('filters')) == 0:
-		data = PGHelper.selectAll("SELECT internal.id, percent, internal.time, e1.name as exchange, a1.name as asset1, a2.name as asset2, a3.name as asset3 FROM internal LEFT JOIN exchanges AS e1 ON (exchange=e1.id) LEFT JOIN assets AS a1 ON (asset0=a1.id) LEFT JOIN assets AS a2 ON (asset1=a2.id) LEFT JOIN assets AS a3 ON (asset2=a3.id) ORDER BY percent desc")
+		data = PGHelper.selectAll("SELECT internal.id, percent, e1.name as exchange, a1.name as asset1, a2.name as asset2, a3.name as asset3, internal.time as time FROM internal LEFT JOIN exchanges AS e1 ON (exchange=e1.id) LEFT JOIN assets AS a1 ON (asset0=a1.id) LEFT JOIN assets AS a2 ON (asset1=a2.id) LEFT JOIN assets AS a3 ON (asset2=a3.id) ORDER BY percent desc LIMIT 1000")
+		for k, v in enumerate(data):
+			data[k]['time'] = v.get('time').isoformat()
 	else:
 		where_str = "WHERE percent > 0 "
 		if filters.get('filters').get('exchanges'):
@@ -22,7 +24,9 @@ def getInternalList():
 		if filters.get('filters').get('actives'):
 			pass
 		where = where_str if where_str else ""
-		data = PGHelper.selectAll("SELECT internal.id, percent, internal.time, e1.name as exchange, a1.name as asset1, a2.name as asset2, a3.name as asset3 FROM internal LEFT JOIN exchanges AS e1 ON (exchange=e1.id) LEFT JOIN assets AS a1 ON (asset0=a1.id) LEFT JOIN assets AS a2 ON (asset1=a2.id) LEFT JOIN assets AS a3 ON (asset2=a3.id) " + where + " ORDER BY percent desc")
+		data = PGHelper.selectAll("SELECT internal.id, percent, e1.name as exchange, a1.name as asset1, a2.name as asset2, a3.name as asset3, internal.time as time FROM internal LEFT JOIN exchanges AS e1 ON (exchange=e1.id) LEFT JOIN assets AS a1 ON (asset0=a1.id) LEFT JOIN assets AS a2 ON (asset1=a2.id) LEFT JOIN assets AS a3 ON (asset2=a3.id) " + where + " ORDER BY percent desc")
+		for k, v in enumerate(data):
+			data[k]['time'] = v.get('time').isoformat()
 	return jsonify(valid=True, result=data)
 
 
